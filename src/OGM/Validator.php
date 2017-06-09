@@ -24,8 +24,6 @@ class Validator
         }
 
         return true;
-
-
     }
 
     /**
