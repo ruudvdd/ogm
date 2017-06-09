@@ -1,7 +1,7 @@
 {
     "name": "ruudvdd/ogm",
     "type": "library",
-    "description": "This package provides two helpful classes that can generate a Belgian OGM-number and can validate one",
+    "description": "Package to validate and generate Belgian OGMs",
     "keywords": ["Belgium", "België", "Bank", "Overschrijving", "OGM", "Gestructureerd", "Mededeling"],
     "authors": [
         {
