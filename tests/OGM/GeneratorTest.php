@@ -1,9 +1,7 @@
 <?php
-namespace Tests\OGM;
+namespace Ruudvdd\OGM;
 
-use OGM\Exception\TooMuchDigits;
-use OGM\Generator;
-use OGM\Validator;
+use Ruudvdd\OGM\Exception\TooMuchDigits;
 
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +33,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 true,
                 $this->validator->digitsAreValid($digit),
-                'Digit ' . $digit . ' failed the test'
+                sprintf('Digit %s failed the test', $digit)
             );
         }
     }
@@ -48,7 +46,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 true,
                 $this->validator->isValid($ogm),
-                'OGM ' . $ogm . ' failed the test'
+                sprintf('OGM %s failed the test', $ogm)
             );
         }
     }

@@ -1,7 +1,5 @@
 <?php
-namespace Tests\OGM;
-
-use OGM\Validator;
+namespace Ruudvdd\OGM;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {

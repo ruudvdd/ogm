@@ -1,5 +1,5 @@
 <?php
-namespace OGM\Exception;
+namespace Ruudvdd\OGM\Exception;
 
 class TooMuchDigits extends \InvalidArgumentException
 {

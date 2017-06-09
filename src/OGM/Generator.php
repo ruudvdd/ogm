@@ -1,7 +1,7 @@
 <?php
-namespace OGM;
+namespace Ruudvdd\OGM;
 
-use OGM\Exception\TooMuchDigits;
+use Ruudvdd\OGM\Exception\TooMuchDigits;
 
 class Generator
 {
@@ -9,6 +9,7 @@ class Generator
      * @param bool $formatted
      * @param int|string|null $prefix
      * @return string
+     * @throws \InvalidArgumentException
      */
     public function generate($formatted = false, $prefix = null)
     {
@@ -30,7 +31,8 @@ class Generator
     }
 
     /**
-     * @param int|string|null $digits
+     * @param mixed $digits
+     * @throws \InvalidArgumentException
      */
     private function guardInputType($digits)
     {
@@ -40,7 +42,8 @@ class Generator
     }
 
     /**
-     * @param int|string|null $digits
+     * @param mixed $digits
+     * @throws \Ruudvdd\OGM\Exception\TooMuchDigits
      */
     private function guardTooMuchDigits($digits)
     {

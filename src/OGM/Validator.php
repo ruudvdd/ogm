@@ -1,5 +1,5 @@
 <?php
-namespace OGM;
+namespace Ruudvdd\OGM;
 
 class Validator
 {
