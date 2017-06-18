@@ -1,0 +1,157 @@
+#!/usr/bin/env php
+<?php
+
+const GENERATE_COMMAND = 'generate';
+const VALIDATE_COMMAND = 'validate';
+
+const VALIDATE_COMMAND_HELP = 'Validate a given OGM by structure and numbers';
+const GENERATE_COMMAND_HELP = 'Generate a valid OGM, possible with a given prefix';
+$autoloadLocations = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../vendor/autoload.php'
+];
+
+$found = false;
+
+foreach ($autoloadLocations as $autoloadLocation) {
+    if (!is_file($autoloadLocation)) {
+        continue;
+    }
+
+    $found = true;
+    require $autoloadLocation;
+    break;
+}
+
+if (!$found) {
+    echo sprintf(
+        'Autoload file not found. Please create one in one of the locations: %s',
+        implode(', ', $autoloadLocations)
+    );
+    die(2);
+}
+
+// check arguments
+
+$arguments = $argv;
+$fileName = array_shift($argv);
+
+$command = array_shift($argv);
+
+
+function printGeneralUsage($errorMessage = null)
+{
+    if ($errorMessage) {
+        echo '- ogm: ', $errorMessage, "\n";
+    }
+
+    echo "\n";
+    echo 'Usage:', "\n";
+    echo '    ogm COMMAND', "\n\n";
+    echo 'Commands:', "\n";
+    echo '    validate', "\t\t", VALIDATE_COMMAND_HELP, "\n";
+    echo '    generate', "\t\t", GENERATE_COMMAND_HELP, "\n\n";
+    echo 'Add the flag -h to a command to see some documentation about the commands', "\n\n";
+}
+
+$error = false;
+
+if ($command === '-h') {
+    printGeneralUsage();
+    die(0);
+}
+
+if ($command === null) {
+    $error = true;
+    $errorMessage = 'No command found';
+
+    printGeneralUsage($errorMessage);
+    die(2);
+}
+
+if (!in_array($command, [VALIDATE_COMMAND, GENERATE_COMMAND], true)) {
+    $error = true;
+    $errorMessage = 'Unknown command found';
+    printGeneralUsage($errorMessage);
+    die(2);
+}
+
+function printValidateCommandUsage()
+{
+    echo "\n";
+    echo 'Usage:', "\n";
+    echo '    ogm validate [OPTIONS] OGM', "\n\n";
+    echo VALIDATE_COMMAND_HELP, "\n\n";
+    echo 'Options:', "\n";
+    echo '    -h', "\t\t\t", 'Print usage of the validate command', "\n";
+    echo '    -c', "\t\t\t", 'Only validate the validity of the digits, not the structure', "\n";
+}
+
+function printGeneratorCommandUsage()
+{
+    echo "\n";
+    echo 'Usage:', "\n";
+    echo '    ogm generate [OPTIONS] [PREFIX]', "\n\n";
+    echo GENERATE_COMMAND_HELP, "\n\n";
+    echo 'Options:', "\n";
+    echo '    -h', "\t\t\t", 'Print usage of the validate command', "\n";
+    echo '    -c', "\t\t\t", 'Only generate the digits, not the structure', "\n";
+}
+
+
+function validate(array $arguments)
+{
+    $option = array_shift($arguments);
+
+    if ($option === '-h') {
+        printValidateCommandUsage();
+        die(0);
+    }
+
+    $validator = new \Ruudvdd\OGM\Validator();
+
+    if ($option === '-c') {
+        $digits = array_shift($arguments);
+        echo $validator->digitsAreValid($digits) ? 'true' : 'false';
+        die(0);
+    }
+
+    echo $validator->isValid($option) ? 'true' : 'false';
+    die(0);
+}
+
+function generate(array $arguments)
+{
+    $option = array_shift($arguments);
+
+    if ($option === '-h') {
+        printGeneratorCommandUsage();
+        die(0);
+    }
+
+    $generator = new \Ruudvdd\OGM\Generator();
+
+    $structured = true;
+
+    if ($option === '-c') {
+        $structured = false;
+        $option = array_shift($arguments);
+    }
+
+    echo $generator->generate($structured, $option);
+    die(0);
+}
+
+
+switch ($command) {
+    case VALIDATE_COMMAND:
+        validate($argv);
+        break;
+    case GENERATE_COMMAND:
+        generate($argv);
+        break;
+    default:
+        printGeneralUsage();
+}
+
+die(0);
